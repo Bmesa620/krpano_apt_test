@@ -1,0 +1,52 @@
+﻿<krpano>
+
+	<action name="startup" autorun="onstart">
+		
+		if(device.panovideosupport == false,
+			error('Sorry, but panoramic videos are not supported by your current browser!');
+		  ,
+			loadscene(videopano);
+		  );
+	</action>
+
+	<scene name="videopano" title="Aptitude Test">
+
+		<!-- include the videoplayer interface / skin (with VR support) -->
+		<include url="skin/videointerface.xml" />
+
+		<!-- include sound plugin -->
+		<plugin name="soundinterface"
+        		url="%SWFPATH%/plugins/soundinterface.swf"
+        		alturl="%SWFPATH%/plugins/soundinterface.js"
+        		preload="true"
+        		volume="1.0"
+        		mute="false"
+        />
+		<!-- include the videoplayer plugin -->
+		<plugin name="video"
+		        url.html5="%SWFPATH%/plugins/videoplayer.js"
+		        url.flash="%SWFPATH%/plugins/videoplayer.swf"
+		        pausedonstart="true"
+		        loop="true"
+		        volume="1.0"
+		        onloaded="add_video_sources();"
+		        />
+
+		<!-- use the videoplayer plugin as panoramic image source -->
+		<image>
+			<sphere url="plugin:video" />
+		</image>
+
+		<!-- set the default view -->
+		<view hlookat="0" vlookat="0" fovtype="DFOV" fov="130" fovmin="75" fovmax="150" distortion="0.0" />
+
+		<!-- add the video sources and play the video -->
+		<action name="add_video_sources">
+			videointerface_addsource('English', '%CURRENTXML%/tourNoAudio.mp4', '%CURRENTXML%/English40.mp3');
+			videointerface_addsource('Dutch', '%CURRENTXML%/tourNoAudio.mp4', '%CURRENTXML%/Dutch40.mp3');
+			videointerface_play('English');
+		</action>
+
+	</scene>
+
+</krpano>
